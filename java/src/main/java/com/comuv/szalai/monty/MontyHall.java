@@ -111,6 +111,16 @@ public class MontyHall {
 		return rand.nextInt(to) + from;
 	}
 
+	private String evaluateDoor(int no) {
+		String result = "Wrong";
+		if (doors[no]) {
+			result = "Winner";
+		} else {
+			result = "Looser";
+		}
+		return result;
+	}
+	
 	public void run() {
 		Random rand = new Random();
 		run(rand);
@@ -120,6 +130,16 @@ public class MontyHall {
 		//Player selects a door
 		if (selectADoor(dice(rand, 1, maxDoors))){
 			System.out.println("Player selected Door No." + getSelectedDoor());
+			//Host opens a non-selected looser door
+			int ld = chooseANotSelectedLooserDoor();
+			System.out.println("Host opened Door No." + ld);
+			System.out.println("The door opened by Host is obviously a " + evaluateDoor(ld));
+			if (dice(rand, 1, 100) < 50) {
+				playerCangesSelection();
+				System.out.println("Player changed her mind.");
+			}
+			System.out.println("Now the door selected by Player is Door No." + getSelectedDoor());
+			System.out.println("The door selected by Player is obviously a " + evaluateDoor(getSelectedDoor()));
 		}
 	}
 

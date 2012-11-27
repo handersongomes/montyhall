@@ -120,6 +120,12 @@ public class MontyHallTest {
 		assertFalse (finalSelection == doorOpenedByHost);
 	}
 
+	@Test
+	public void montyHallRunTest() {
+		MontyHall game = new MontyHall();
+		game.run();
+	}
+
 	private boolean isDoorInRange(int door) {
 		return (door <= maxDoors) && (door > 0);
 	}
