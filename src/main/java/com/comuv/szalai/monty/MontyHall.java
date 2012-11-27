@@ -72,8 +72,14 @@ public class MontyHall {
 	}
 
 	public int chooseANotSelectedLooserDoor() {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		int i = 1;
+		while ((i <= maxDoors) && (result == 0)) {
+			if ((i != selectedDoor) && (!openADoor(i)))
+				result = i;
+			i++;
+		}
+		return result;
 	}
 
 }

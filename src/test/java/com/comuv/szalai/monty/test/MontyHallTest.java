@@ -69,6 +69,14 @@ public class MontyHallTest {
 	}
 	
 	@Test
+	public void chooseANotSelectedLooserDoorTest_NoSelectionWasMade() {
+		MontyHall untouchedMontyHall = new MontyHall();
+		int result = untouchedMontyHall.chooseANotSelectedLooserDoor();
+		assertFalse ((result < maxDoors) && (result > 0)) ;
+		assertTrue (result == 0);
+	}
+	
+	@Test
 	public void openADoorTest_OnlyOneDoorIsWinner() {
 		int itMustBeOne = 0;
 		for (int i = 1; i <= maxDoors; i++) {
