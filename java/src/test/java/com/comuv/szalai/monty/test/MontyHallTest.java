@@ -30,6 +30,7 @@ public class MontyHallTest {
 
 	private MontyHall montyhall = null;
 	private int maxDoors = MontyHall.maxDoors; 
+	//private int testRandomSeed = 100;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -38,6 +39,7 @@ public class MontyHallTest {
 	@Before
 	public void setUp() throws Exception {
 		montyhall = new MontyHall();
+		montyhall.init(new Random(/*testRandomSeed*/));
 	}
 
 	@Test
@@ -60,9 +62,12 @@ public class MontyHallTest {
 
 	@Test
 	public void openADoorTest_InBounds() {
-		assertFalse (montyhall.openADoor(1));
-		assertTrue (montyhall.openADoor(2));
-		assertFalse (montyhall.openADoor(3));
+		int d = 0;
+		for (int i = 1; i <= maxDoors; i++)
+			if (montyhall.openADoor(i))
+				d = i;
+		assertTrue (d > 0);
+		assertTrue (isDoorInRange(d));
 	}
 
 	@Test
@@ -123,6 +128,7 @@ public class MontyHallTest {
 	@Test
 	public void montyHallRunTest() {
 		MontyHall game = new MontyHall();
+		game.init(null);
 		game.run();
 	}
 

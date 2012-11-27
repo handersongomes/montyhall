@@ -39,20 +39,25 @@ public class MontyHall {
 	private int theWinnerDoor = 0; 
 	private int selectedDoor = 0;
 	private int otherDoor = 0;
-
+	private Random rand = null;
+	
+	private boolean changedMind = false;
+	private boolean playerWon = false;
 
 
 	public MontyHall() {
 		super();
-		/*
-		 * To random, or not to random - This is the question
-		 * There is two way ahead 
-		 * - leave constructor as untouched as possible and implement an init() method 
-		 * - trick the constructor to get or create a Random
-		 * 
-		 * At first attempt I'll pick the first way
-		 */
-		theWinnerDoor = Random.nextInt(maxDoors) + 1;
+	}
+
+	public void init(Random rand0) {
+		// working around the Random Seed Issue
+		if (rand0 != null) {
+			this.rand = rand0;
+		} else {
+			this.rand = new Random();
+		}
+		
+		theWinnerDoor = rand.nextInt(maxDoors) + 1;
 
 		/* 
 		 * With the following initialization we assure that only one
@@ -63,8 +68,19 @@ public class MontyHall {
 		doors[theWinnerDoor] = true;
 	}
 
+	//Getter
 	public int getSelectedDoor() {
 		return selectedDoor;
+	}
+
+	//Getter
+	public boolean hasChangedMind() {
+		return changedMind;
+	}
+
+	//Getter
+	public boolean didPlayerWin() {
+		return playerWon;
 	}
 
 	public boolean selectADoor(int i) {
@@ -112,11 +128,18 @@ public class MontyHall {
 	public int playerCangesSelection() {
 		int tmp = 0;
 		tmp = selectedDoor; selectedDoor = otherDoor; otherDoor = tmp;
+		changedMind = true;
 		return selectedDoor;
 	}
 	
-	private int dice(Random rand, int from, int to) {
-		return rand.nextInt(to) + from;
+	private int dice(int from, int to) {
+		Random rand1 = null;
+		if (this.rand != null) {
+			rand1 = this.rand;
+		} else {
+			rand1 = new Random();
+		}
+		return rand1.nextInt(to) + from;
 	}
 
 	private String evaluateDoor(int no) {
@@ -130,24 +153,35 @@ public class MontyHall {
 	}
 	
 	public void run() {
-		Random rand = new Random();
-		run(rand);
-	}
-
-	public void run(Random rand) {
+		//printConfiguration();
+		printMsg("");
 		//Player selects a door
-		if (selectADoor(dice(rand, 1, maxDoors))){
-			System.out.println("Player selected Door No." + getSelectedDoor());
+		if (selectADoor(dice(1, maxDoors))){
+			printMsg("Player selected Door No." + getSelectedDoor());
 			//Host opens a non-selected looser door
 			int ld = chooseANotSelectedLooserDoor();
-			System.out.println("Host opened Door No." + ld);
-			System.out.println("The door opened by Host is obviously a " + evaluateDoor(ld));
-			if (dice(rand, 1, 100) < 50) {
+			printMsg("Host opened Door No." + ld);
+			printMsg("The door opened by Host is obviously a " + evaluateDoor(ld));
+			int chm = dice(1, 100);
+			printMsg("Player changed her mind. (" + chm + ").");
+			if (chm < 50) {
 				playerCangesSelection();
-				System.out.println("Player changed her mind.");
+				printMsg("Player changed her mind.");
 			}
-			System.out.println("Now the door selected by Player is Door No." + getSelectedDoor());
-			System.out.println("The door selected by Player is obviously a " + evaluateDoor(getSelectedDoor()));
+			printMsg("Now the door selected by Player is Door No." + getSelectedDoor());
+			printMsg("The door selected by Player is obviously a " + evaluateDoor(getSelectedDoor()));
+			playerWon = doors[getSelectedDoor()];
+		}
+	}
+
+	public void printMsg(String msg) {
+		System.out.println(msg);
+	}
+
+	public void printConfiguration() {
+		System.out.print("Configuration details:");
+		for (int i = 1; i <= maxDoors; i++) {
+			System.out.print(" Door No." + i + ", " + doors[i]); 
 		}
 	}
 
