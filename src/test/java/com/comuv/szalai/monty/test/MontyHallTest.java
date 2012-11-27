@@ -2,6 +2,8 @@ package com.comuv.szalai.monty.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,7 +35,7 @@ public class MontyHallTest {
 		assertFalse (montyhall.selectADoor(0));
 		for (int i = 1; i <= maxDoors; i++)
 			assertTrue (montyhall.selectADoor(i));
-		assertFalse (montyhall.selectADoor(4));
+		assertFalse (montyhall.selectADoor(maxDoors + 1));
 	}
 
 	@Test
@@ -52,14 +54,18 @@ public class MontyHallTest {
 	@Test
 	public void openADoorTest_OutOfUpperBound() {
 		exception.expect(ArrayIndexOutOfBoundsException.class);
-		montyhall.openADoor(4);
+		montyhall.openADoor(maxDoors + 1);
 	}
 	
 
 	@Test
 	public void chooseANotSelectedLooserDoorTest() {
+		Random rand = new Random();
+		int selected = rand.nextInt(maxDoors) + 1;
+		assertTrue (montyhall.selectADoor(selected));
 		int result = montyhall.chooseANotSelectedLooserDoor();
 		assertTrue ((result < maxDoors) && (result > 0)) ;
+		assertTrue (result != selected);
 	}
 	
 	@Test

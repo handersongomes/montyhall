@@ -22,8 +22,7 @@
  * Ongoing - Host opens a door which leads to loose
  *  -- Q:what if there is two looser doors present?
  *  -- D:we will show the first found not selected looser door 
- * TODO - Host opens the door selected by Player
- * TODO - Player selects a door
+ * TODO - Host opens the door selected by Player (evaluation)
  * 
  */
 package com.comuv.szalai.monty;
