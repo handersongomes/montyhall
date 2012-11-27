@@ -40,9 +40,11 @@ public class MontyHall {
 	private int selectedDoor = 0;
 	private int otherDoor = 0;
 	private Random rand = null;
-	
+
 	private boolean changedMind = false;
 	private boolean playerWon = false;
+
+	private boolean quietMode = false;
 
 
 	public MontyHall() {
@@ -56,7 +58,7 @@ public class MontyHall {
 		} else {
 			this.rand = new Random();
 		}
-		
+
 		theWinnerDoor = rand.nextInt(maxDoors) + 1;
 
 		/* 
@@ -131,7 +133,7 @@ public class MontyHall {
 		changedMind = true;
 		return selectedDoor;
 	}
-	
+
 	private int dice(int from, int to) {
 		Random rand1 = null;
 		if (this.rand != null) {
@@ -151,9 +153,9 @@ public class MontyHall {
 		}
 		return result;
 	}
-	
+
 	public void run() {
-		//printConfiguration();
+		printConfiguration();
 		printMsg("");
 		//Player selects a door
 		if (selectADoor(dice(1, maxDoors))){
@@ -175,14 +177,25 @@ public class MontyHall {
 	}
 
 	public void printMsg(String msg) {
-		System.out.println(msg);
+		if (!quietMode)
+			System.out.println(msg);
 	}
 
 	public void printConfiguration() {
-		System.out.print("Configuration details:");
-		for (int i = 1; i <= maxDoors; i++) {
-			System.out.print(" Door No." + i + ", " + doors[i]); 
+		if (!quietMode) {
+			System.out.print("Configuration details:");
+			for (int i = 1; i <= maxDoors; i++) {
+				System.out.print(" Door No." + i + ", " + doors[i]); 
+			}
 		}
+	}
+
+	public boolean isQuietMode() {
+		return quietMode;
+	}
+
+	public void setQuietMode(boolean quietMode) {
+		this.quietMode = quietMode;
 	}
 
 
