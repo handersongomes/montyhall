@@ -116,6 +116,9 @@ public class MontyHall {
 		//Player selects a door
 		if (selectADoor(dice(rand, 1, maxDoors))){
 			//System.out....
+			// at this point I noticed: print to console WHAT?
+			// there is no clue how to get Player's selection
+			// yet.
 			;
 		}
 	}
