@@ -44,7 +44,15 @@ public class MontyHall {
 
 	public MontyHall() {
 		super();
-		theWinnerDoor = 2;
+		/*
+		 * To random, or not to random - This is the question
+		 * There is two way ahead 
+		 * - leave constructor as untouched as possible and implement an init() method 
+		 * - trick the constructor to get or create a Random
+		 * 
+		 * At first attempt I'll pick the first way
+		 */
+		theWinnerDoor = Random.nextInt(maxDoors) + 1;
 
 		/* 
 		 * With the following initialization we assure that only one
