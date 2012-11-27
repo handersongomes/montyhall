@@ -17,9 +17,9 @@
  * Is it to your advantage to switch your choice?
  * 
  * Implemented features:
- * TODO - select a door and mark it to be opened
- * TODO - open a door and show content behind
- * TODO - Host opens a door which leads to loose
+ *  - select a door and mark it to be opened
+ *  - open a door and show content behind
+ * Ongoing - Host opens a door which leads to loose
  * TODO - Host opens the door selected by Player
  * TODO - Player selects a door
  * 
@@ -32,16 +32,16 @@ package com.comuv.szalai.monty;
  */
 public class MontyHall {
 	
-	private String[] doors = new String[4];
+	private boolean[] doors = new boolean[4];
 	private int selectedDoor = 0;
 	
 	
 
 	public MontyHall() {
 		super();
-		doors[1] = "Loose";
-		doors[2] = "Win";
-		doors[3] = "Loose";
+		doors[1] = false;
+		doors[2] = true;
+		doors[3] = false;
 	}
 
 	/**
@@ -62,12 +62,17 @@ public class MontyHall {
 	}
 
 	public String openADoor(int i) {
-		//TODO: some range check should be implemented here
+		String result = null;
 		if (i < doors.length && i > 0) {
-			return doors[i];
+			if (doors[i]){
+				result = "Win";
+			} else {
+				result = "Loose";
+			}
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		return result;
 	}
 
 }
