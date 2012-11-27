@@ -17,7 +17,7 @@ public class MontyHallTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	private MontyHall montyhall = null;
-	private int maxDoors = 3; 
+	private int maxDoors = MontyHall.maxDoors; 
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -38,9 +38,9 @@ public class MontyHallTest {
 
 	@Test
 	public void openADoorTest_InBounds() {
-		assertEquals (montyhall.openADoor(1), "Loose");
-		assertEquals (montyhall.openADoor(2), "Win");
-		assertEquals (montyhall.openADoor(3), "Loose");
+		assertFalse (montyhall.openADoor(1));
+		assertTrue (montyhall.openADoor(2));
+		assertFalse (montyhall.openADoor(3));
 	}
 	
 	@Test
@@ -54,4 +54,23 @@ public class MontyHallTest {
 		exception.expect(ArrayIndexOutOfBoundsException.class);
 		montyhall.openADoor(4);
 	}
+	
+	/*
+	@Test
+	public void chooseANotSelectedLooserDoorTest() {
+		int result = montyhall.chooseANotSelectedLooserDoor();
+		assertTrue ((result < maxDoors) && (result > 0)) ;
+	}
+	*/
+	
+	@Test
+	public void openADoorTest_OnlyOneDoorIsWinner() {
+		int itMustBeOne = 0;
+		for (int i = 1; i <= maxDoors; i++) {
+			if (montyhall.openADoor(i)) 
+				itMustBeOne++;
+		}
+		assertEquals (1, itMustBeOne);
+	}
+
 }

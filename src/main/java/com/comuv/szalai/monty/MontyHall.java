@@ -32,24 +32,25 @@ package com.comuv.szalai.monty;
  */
 public class MontyHall {
 	
-	private boolean[] doors = new boolean[4];
+	public static final int maxDoors = 3;
+	
+	private boolean[] doors = new boolean[maxDoors + 1];
+	private int theWinnerDoor = 0; 
 	private int selectedDoor = 0;
 	
 	
 
 	public MontyHall() {
 		super();
-		doors[1] = false;
-		doors[2] = true;
-		doors[3] = false;
-	}
+		theWinnerDoor = 2;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		/* 
+		 * With the following initialization we assure that only one
+		 * of all doors will be the winner door.
+		 */
+		for (int i = 1; i <= maxDoors; i++)
+			doors[i] = false;
+		doors[theWinnerDoor] = true;
 	}
 
 	public boolean selectADoor(int i) {
@@ -61,18 +62,12 @@ public class MontyHall {
 		return result;
 	}
 
-	public String openADoor(int i) {
-		String result = null;
+	public boolean openADoor(int i) {
 		if (i < doors.length && i > 0) {
-			if (doors[i]){
-				result = "Win";
-			} else {
-				result = "Loose";
-			}
+			return doors[i];
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
-		return result;
 	}
 
 }
