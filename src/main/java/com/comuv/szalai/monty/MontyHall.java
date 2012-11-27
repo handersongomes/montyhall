@@ -63,7 +63,11 @@ public class MontyHall {
 
 	public String openADoor(int i) {
 		//TODO: some range check should be implemented here
-		return doors[i];
+		if (i < doors.length && i > 0) {
+			return doors[i];
+		} else {
+			throw new ArrayIndexOutOfBoundsException();
+		}
 	}
 
 }
