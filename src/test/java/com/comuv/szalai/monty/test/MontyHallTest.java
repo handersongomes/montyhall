@@ -55,13 +55,12 @@ public class MontyHallTest {
 		montyhall.openADoor(4);
 	}
 	
-	/*
+
 	@Test
 	public void chooseANotSelectedLooserDoorTest() {
 		int result = montyhall.chooseANotSelectedLooserDoor();
 		assertTrue ((result < maxDoors) && (result > 0)) ;
 	}
-	*/
 	
 	@Test
 	public void openADoorTest_OnlyOneDoorIsWinner() {

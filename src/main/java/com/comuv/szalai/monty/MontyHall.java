@@ -70,4 +70,9 @@ public class MontyHall {
 		}
 	}
 
+	public int chooseANotSelectedLooserDoor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
