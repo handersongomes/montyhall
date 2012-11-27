@@ -19,27 +19,28 @@
  * Implemented features:
  *  - select a door and mark it to be opened
  *  - open a door and show content behind
- * Ongoing - Host opens a door which leads to loose
+ *  - Host opens a door which leads to loose
  *  -- Q:what if there is two looser doors present?
  *  -- D:we will show the first found not selected looser door 
- * TODO - Host opens the door selected by Player (evaluation)
- * 
  */
 package com.comuv.szalai.monty;
+
+import java.util.Random;
 
 /**
  * @author ljszalai
  *
  */
 public class MontyHall {
-	
+
 	public static final int maxDoors = 3;
-	
+
 	private boolean[] doors = new boolean[maxDoors + 1];
 	private int theWinnerDoor = 0; 
 	private int selectedDoor = 0;
-	
-	
+	private int otherDoor = 0;
+
+
 
 	public MontyHall() {
 		super();
@@ -59,13 +60,16 @@ public class MontyHall {
 		if (i < doors.length && i > 0) {
 			selectedDoor = i;
 			result = true;
+		} else {
+			//result = false;
 		}
 		return result;
 	}
 
 	public boolean openADoor(int i) {
+		boolean result = doors[i]; 
 		if (i < doors.length && i > 0) {
-			return doors[i];
+			return result; 
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -74,12 +78,47 @@ public class MontyHall {
 	public int chooseANotSelectedLooserDoor() {
 		int result = 0;
 		int i = 1;
-		while ((i <= maxDoors) && (result == 0)) {
-			if ((i != selectedDoor) && (!openADoor(i)))
-				result = i;
-			i++;
+		otherDoor = 0;
+		if (selectedDoor != 0) {
+			while ((i <= maxDoors) && (result == 0)) {
+				if ((i != selectedDoor) && (!openADoor(i)))
+					result = i;
+				i++;
+			}
+			int o = 1;
+			while ((o <= maxDoors) && (otherDoor == 0)) {
+				if ((o != selectedDoor) && (o != result))
+					otherDoor = o;
+				o++;
+			}
+		} else {
+			result = -1;
 		}
 		return result;
 	}
+
+	public int playerCangesSelection() {
+		int tmp = 0;
+		tmp = selectedDoor; selectedDoor = otherDoor; otherDoor = tmp;
+		return selectedDoor;
+	}
+	
+	private int dice(Random rand, int from, int to) {
+		return rand.nextInt(to) + from;
+	}
+
+	public void run() {
+		Random rand = new Random();
+		run(rand);
+	}
+
+	public void run(Random rand) {
+		//Player selects a door
+		if (selectADoor(dice(rand, 1, maxDoors))){
+			//System.out....
+			;
+		}
+	}
+
 
 }

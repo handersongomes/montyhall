@@ -1,10 +1,11 @@
 package com.comuv.szalai.monty.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -14,9 +15,18 @@ import org.junit.rules.ExpectedException;
 import com.comuv.szalai.monty.MontyHall;
 
 public class MontyHallTest {
-	
+
+/*
+ * For debug:
+	String runningTestName = new Object(){}.getClass().getEnclosingMethod().getName();
+	System.out.println("Test running: " + runningTestName);
+ * Got from:
+ * 	http://stackoverflow.com/questions/442747/getting-the-name-of-the-current-executing-method 
+ */
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+
+	int smi = 1; //Index for getMethodName
 
 	private MontyHall montyhall = null;
 	private int maxDoors = MontyHall.maxDoors; 
@@ -44,7 +54,7 @@ public class MontyHallTest {
 		assertTrue (montyhall.openADoor(2));
 		assertFalse (montyhall.openADoor(3));
 	}
-	
+
 	@Test
 	public void openADoorTest_OutOfLowerBound() {
 		exception.expect(ArrayIndexOutOfBoundsException.class);
@@ -56,7 +66,7 @@ public class MontyHallTest {
 		exception.expect(ArrayIndexOutOfBoundsException.class);
 		montyhall.openADoor(maxDoors + 1);
 	}
-	
+
 
 	@Test
 	public void chooseANotSelectedLooserDoorTest() {
@@ -64,18 +74,18 @@ public class MontyHallTest {
 		int selected = rand.nextInt(maxDoors) + 1;
 		assertTrue (montyhall.selectADoor(selected));
 		int result = montyhall.chooseANotSelectedLooserDoor();
-		assertTrue ((result < maxDoors) && (result > 0)) ;
+		assertTrue (isDoorInRange(result)) ;
 		assertTrue (result != selected);
 	}
-	
+
 	@Test
 	public void chooseANotSelectedLooserDoorTest_NoSelectionWasMade() {
 		MontyHall untouchedMontyHall = new MontyHall();
 		int result = untouchedMontyHall.chooseANotSelectedLooserDoor();
-		assertFalse ((result < maxDoors) && (result > 0)) ;
-		assertTrue (result == 0);
+		assertFalse (isDoorInRange(result)) ;
+		assertTrue (result == -1);
 	}
-	
+
 	@Test
 	public void openADoorTest_OnlyOneDoorIsWinner() {
 		int itMustBeOne = 0;
@@ -84,6 +94,24 @@ public class MontyHallTest {
 				itMustBeOne++;
 		}
 		assertEquals (1, itMustBeOne);
+	}
+
+	@Test
+	public void playerChangesSelectionTest() {
+		Random rand = new Random();
+		int originalSelection = rand.nextInt(maxDoors) + 1;
+		assertTrue (montyhall.selectADoor(originalSelection));
+		int doorOpenedByHost = montyhall.chooseANotSelectedLooserDoor();
+		assertTrue (isDoorInRange(doorOpenedByHost)) ;
+		assertTrue (doorOpenedByHost != originalSelection);
+		int finalSelection = montyhall.playerCangesSelection();
+		assertTrue (isDoorInRange(finalSelection));
+		assertFalse (finalSelection == originalSelection);
+		assertFalse (finalSelection == doorOpenedByHost);
+	}
+
+	private boolean isDoorInRange(int door) {
+		return (door <= maxDoors) && (door > 0);
 	}
 
 }
