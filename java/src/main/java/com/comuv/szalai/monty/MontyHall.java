@@ -55,6 +55,10 @@ public class MontyHall {
 		doors[theWinnerDoor] = true;
 	}
 
+	public int getSelectedDoor() {
+		return selectedDoor;
+	}
+
 	public boolean selectADoor(int i) {
 		boolean result = false;
 		if (i < doors.length && i > 0) {
@@ -115,11 +119,7 @@ public class MontyHall {
 	public void run(Random rand) {
 		//Player selects a door
 		if (selectADoor(dice(rand, 1, maxDoors))){
-			//System.out....
-			// at this point I noticed: print to console WHAT?
-			// there is no clue how to get Player's selection
-			// yet.
-			;
+			System.out.println("Player selected Door No." + getSelectedDoor());
 		}
 	}
 

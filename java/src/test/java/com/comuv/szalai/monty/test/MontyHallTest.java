@@ -41,6 +41,16 @@ public class MontyHallTest {
 	}
 
 	@Test
+	public void getSelectedDoorTest() {
+		Random rand = new Random();
+		int selected = rand.nextInt(maxDoors) + 1;
+		assertTrue (montyhall.selectADoor(selected));
+		assertTrue (isDoorInRange(montyhall.getSelectedDoor())) ;
+		assertTrue (montyhall.getSelectedDoor() == selected) ;
+	}
+
+
+	@Test
 	public void selectADoorTest() {
 		assertFalse (montyhall.selectADoor(0));
 		for (int i = 1; i <= maxDoors; i++)
